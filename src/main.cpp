@@ -7,7 +7,7 @@
 const int screenWidth = 800;
 const int screenHeight = 800;
 const int FPS = 60;
-const int numberBoids = 30;
+const int numberBoids = 80;
 const int minSpeed = 500;
 const int maxSpeed = 800;
 const char *title = "Boids - Flock of birds";
@@ -44,7 +44,9 @@ int main(void)
 
         // Apply rules
         rules.clear_forces(boids);
-        rules.steer_towards_mouse(boids);
+        // rules.steer_towards_mouse(boids);
+        rules.cohesion(boids);
+        rules.edges(boids);
 
         for (auto &boid : boids)
             boid.update(dt);
