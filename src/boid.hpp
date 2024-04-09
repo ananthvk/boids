@@ -5,7 +5,6 @@
 #include <string>
 
 const int BOID_SIDES = 3; // For triangle
-const int MAX_SPEED = 50;
 
 class Boid
 {
@@ -16,12 +15,15 @@ class Boid
     Color color;
     float size;
     float rotation;
+    int topSpeed;
 
   public:
     Boid(Vector2 initial_position, Vector2 initial_velocity = {0, 0},
-         Vector2 initial_acceleration = {0, 0}, Color color = {0, 0, 255, 255}, float size = 15)
+         Vector2 initial_acceleration = {0, 0}, Color color = {0, 0, 255, 255}, float size = 15,
+         int topSpeed = 100)
         : position(initial_position), velocity(initial_velocity),
-          acceleration(initial_acceleration), color(color), size(size), rotation(0)
+          acceleration(initial_acceleration), color(color), size(size), rotation(0),
+          topSpeed(topSpeed)
     {
     }
 
@@ -45,7 +47,7 @@ class Boid
 
         // Update rotation to point in the direction of the velocity vector
         // Find the angle between shape and x axis
-        velocity = Vector2ClampValue(velocity, 0, MAX_SPEED);
+        velocity = Vector2ClampValue(velocity, 0, topSpeed);
 
         rotation = (180 / PI) * Vector2Angle(velocity, {1, 0});
     }

@@ -6,6 +6,7 @@
 const int screenWidth = 800;
 const int screenHeight = 800;
 const int FPS = 60;
+const int numberBoids = 30;
 const char *title = "Boids - Flock of birds";
 
 int main(void)
@@ -15,7 +16,22 @@ int main(void)
     SetTargetFPS(FPS);
 
     std::vector<Boid> boids;
-    boids.push_back(Boid({300, 200}));
+    for (int i = 0; i < numberBoids; i++)
+    {
+        float x = GetRandomValue(0, screenWidth);
+        float y = GetRandomValue(0, screenHeight);
+
+        float xvel = GetRandomValue(-50, 50);
+        float yvel = GetRandomValue(-50, 50);
+
+        unsigned char r = GetRandomValue(0, 255);
+        unsigned char g = GetRandomValue(0, 255);
+        unsigned char b = GetRandomValue(0, 255);
+        
+        int topSpeed = GetRandomValue(500, 800);
+
+        boids.push_back(Boid({x, y}, {xvel, yvel}, {0.0, 0.0}, {r, g, b, 255}, 15, topSpeed));
+    }
 
     while (!WindowShouldClose())
     {
@@ -23,7 +39,7 @@ int main(void)
         float dt = GetFrameTime();
         for (auto &boid : boids)
             boid.update(dt);
-        
+
         // Draw the shapes to the screen
         BeginDrawing();
         ClearBackground(RAYWHITE);
