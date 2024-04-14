@@ -31,15 +31,15 @@ std::vector<Boid> get_random_boids()
 
         Vector2 velocity = Vector2Scale(direction, static_cast<float>(GetRandomValue(100, 1000)) / 10.0);
 
-        Color boid_color = {static_cast<unsigned char>(GetRandomValue(0, 255)),
-                            static_cast<unsigned char>(GetRandomValue(0, 255)),
-                            static_cast<unsigned char>(GetRandomValue(0, 255)), 255};
+        Color boid_color = {static_cast<unsigned char>(GetRandomValue(0, 200)),
+                            static_cast<unsigned char>(GetRandomValue(0, 200)),
+                            static_cast<unsigned char>(GetRandomValue(200, 255)), 255};
 
         int topSpeed = GetRandomValue(min_speed, max_speed);
 
         int maxAcceleration = GetRandomValue(max_acceleration / 2, max_acceleration);
 
-        boids.push_back(Boid({x, y}, velocity, {0, 0}, boid_color, 8, topSpeed, max_acceleration));
+        boids.push_back(Boid({x, y}, velocity, {0, 0}, boid_color, boid_size, topSpeed, max_acceleration));
     }
     return boids;
 }

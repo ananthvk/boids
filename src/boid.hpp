@@ -6,6 +6,7 @@
 
 const int BOID_SIDES = 3; // For triangle
 const int DEBUG_VECTOR_LENGTH = 20;
+const int DEBUG_VECTOR_THICKNESS = 2;
 
 class Boid
 {
@@ -19,6 +20,16 @@ class Boid
     int topSpeed;
     Vector2 new_acceleration;
     float max_acceleration;
+
+    // Draw a vector (for debugging purpose)
+    void draw_vector(Vector2 v, Color c) const
+    {
+        Vector2 pos = position;
+        pos.y = GetScreenHeight() - pos.y;
+        v.y = -v.y;
+        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(v, DEBUG_VECTOR_LENGTH)),
+                   DEBUG_VECTOR_THICKNESS, c);
+    }
 
   public:
     Boid(Vector2 initial_position, Vector2 initial_velocity = {0, 0},
@@ -82,14 +93,8 @@ class Boid
     {
         Vector2 velocity_direction = Vector2Normalize(velocity);
         Vector2 acceleration_direction = Vector2Normalize(acceleration);
-
-        Vector2 pos = position;
-        pos.y = GetScreenHeight() - pos.y;
-        velocity_direction.y = -velocity_direction.y;
-        acceleration_direction.y = -acceleration_direction.y;
-
-        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(velocity_direction, DEBUG_VECTOR_LENGTH)), 2, GREEN);
-        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(acceleration_direction, DEBUG_VECTOR_LENGTH)), 2, RED);
+        draw_vector(velocity_direction, GREEN);
+        draw_vector(acceleration_direction, RED);
     }
 
     friend class Rules;
