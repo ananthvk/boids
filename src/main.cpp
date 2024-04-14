@@ -4,22 +4,21 @@
 #include <string>
 #include <vector>
 
+// Some constants such as title, screen dimensions, etc
 const int screenWidth = 800;
 const int screenHeight = 800;
 const int FPS = 60;
-const int numberBoids = 80;
-const int minSpeed = 500;
-const int maxSpeed = 800;
+const int numberBoids = 1;
+const int minSpeed = 950;
+const int maxSpeed = 1250;
+const float max_acceleration = 200;
 const char *title = "Boids - Flock of birds";
 
-int main(void)
+/// Generates boids with different colors, sizes and max speeds
+/// @return vector of boids
+std::vector<Boid> get_random_boids()
 {
-    Rules rules;
-    InitWindow(screenWidth, screenHeight, title);
-    SetTargetFPS(FPS);
-
     std::vector<Boid> boids;
-    // Create a few random boids
     for (int i = 0; i < numberBoids; i++)
     {
         float x = GetRandomValue(0, screenWidth);
@@ -34,8 +33,18 @@ int main(void)
 
         int topSpeed = GetRandomValue(minSpeed, maxSpeed);
 
-        boids.push_back(Boid({x, y}, {xvel, yvel}, {0.0, 0.0}, {r, g, b, 255}, 15, topSpeed));
+        boids.push_back(Boid({x, y}, {xvel, yvel}, {0.0, 0.0}, {r, g, b, 255}, 8, topSpeed, max_acceleration));
     }
+    return boids;
+}
+
+int main(void)
+{
+    Rules rules;
+    InitWindow(screenWidth, screenHeight, title);
+    SetTargetFPS(FPS);
+
+    std::vector<Boid> boids = get_random_boids();
 
     while (!WindowShouldClose())
     {
@@ -44,10 +53,9 @@ int main(void)
 
         // Apply rules
         rules.clear_forces(boids);
-        // rules.steer_towards_mouse(boids);
-        rules.cohesion(boids);
-        rules.edges(boids);
+        rules.steer_towards_mouse(boids);
 
+        // Update velocity and position of boids after applying forces
         for (auto &boid : boids)
             boid.update(dt);
 

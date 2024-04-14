@@ -17,14 +17,15 @@ class Boid
     float rotation;
     int topSpeed;
     Vector2 new_acceleration;
+    float max_acceleration;
 
   public:
     Boid(Vector2 initial_position, Vector2 initial_velocity = {0, 0},
          Vector2 initial_acceleration = {0, 0}, Color color = {0, 0, 255, 255}, float size = 15,
-         int topSpeed = 100)
+         int topSpeed = 100, float max_acceleration = 75)
         : position(initial_position), velocity(initial_velocity),
           acceleration(initial_acceleration), color(color), size(size), rotation(0),
-          topSpeed(topSpeed), new_acceleration({0, 0})
+          topSpeed(topSpeed), new_acceleration({0, 0}), max_acceleration(max_acceleration)
     {
     }
 
@@ -33,6 +34,9 @@ class Boid
     // https://en.wikipedia.org/wiki/Verlet_integration
     void update(float dt)
     {
+        // Calmp new acceleration
+        new_acceleration = Vector2ClampValue(new_acceleration, 0, max_acceleration);
+
         auto comp1 = Vector2Add(position, Vector2Scale(velocity, dt));
         auto comp2 = Vector2Scale(acceleration, (dt * dt * 0.5));
         Vector2 new_position = Vector2Add(comp1, comp2);
@@ -72,6 +76,6 @@ class Boid
         pos.y = GetScreenHeight() - pos.y;
         DrawPoly(pos, BOID_SIDES, size, rotation, color);
     }
-    
+
     friend class Rules;
 };
