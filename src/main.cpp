@@ -8,7 +8,7 @@
 const int screen_width = 800;
 const int screen_height = 800;
 const int FPS = 60;
-const int number_boids = 100;
+const int number_boids = 150;
 const int min_speed = 950;
 const int boid_size = 8;
 const int max_speed = 1250;
@@ -26,11 +26,10 @@ std::vector<Boid> get_random_boids()
         float x = GetRandomValue(0, screen_width);
         float y = GetRandomValue(0, screen_height);
 
-        float xvel = GetRandomValue(-50, 50);
-        float yvel = GetRandomValue(-50, 50);
+        Vector2 direction = {static_cast<float>(GetRandomValue(-1000, 1000)), static_cast<float>(GetRandomValue(-1000, 1000))};
+        direction = Vector2Normalize(direction);
 
-        float xacc = GetRandomValue(-5, 5);
-        float yacc = GetRandomValue(-5, 5);
+        Vector2 velocity = Vector2Scale(direction, static_cast<float>(GetRandomValue(100, 1000)) / 10.0);
 
         Color boid_color = {static_cast<unsigned char>(GetRandomValue(0, 255)),
                             static_cast<unsigned char>(GetRandomValue(0, 255)),
@@ -40,8 +39,7 @@ std::vector<Boid> get_random_boids()
 
         int maxAcceleration = GetRandomValue(max_acceleration / 2, max_acceleration);
 
-        boids.push_back(
-            Boid({x, y}, {xvel, yvel}, {xacc, yacc}, boid_color, 8, topSpeed, max_acceleration));
+        boids.push_back(Boid({x, y}, velocity, {0, 0}, boid_color, 8, topSpeed, max_acceleration));
     }
     return boids;
 }

@@ -5,6 +5,7 @@
 #include <string>
 
 const int BOID_SIDES = 3; // For triangle
+const int DEBUG_VECTOR_LENGTH = 20;
 
 class Boid
 {
@@ -87,8 +88,8 @@ class Boid
         velocity_direction.y = -velocity_direction.y;
         acceleration_direction.y = -acceleration_direction.y;
 
-        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(velocity_direction, 50)), 2, GREEN);
-        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(acceleration_direction, 50)), 2, RED);
+        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(velocity_direction, DEBUG_VECTOR_LENGTH)), 2, GREEN);
+        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(acceleration_direction, DEBUG_VECTOR_LENGTH)), 2, RED);
     }
 
     friend class Rules;
