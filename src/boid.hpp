@@ -77,5 +77,19 @@ class Boid
         DrawPoly(pos, BOID_SIDES, size, rotation, color);
     }
 
+    void debug() const
+    {
+        Vector2 velocity_direction = Vector2Normalize(velocity);
+        Vector2 acceleration_direction = Vector2Normalize(acceleration);
+
+        Vector2 pos = position;
+        pos.y = GetScreenHeight() - pos.y;
+        velocity_direction.y = -velocity_direction.y;
+        acceleration_direction.y = -acceleration_direction.y;
+
+        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(velocity_direction, 50)), 2, GREEN);
+        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(acceleration_direction, 50)), 2, RED);
+    }
+
     friend class Rules;
 };

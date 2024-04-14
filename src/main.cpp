@@ -5,13 +5,15 @@
 #include <vector>
 
 // Some constants such as title, screen dimensions, etc
-const int screenWidth = 800;
-const int screenHeight = 800;
+const int screen_width = 800;
+const int screen_height = 800;
 const int FPS = 60;
-const int numberBoids = 1;
-const int minSpeed = 950;
-const int maxSpeed = 1250;
+const int number_boids = 100;
+const int min_speed = 950;
+const int boid_size = 8;
+const int max_speed = 1250;
 const float max_acceleration = 200;
+const int edge_dist = 20;
 const char *title = "Boids - Flock of birds";
 
 /// Generates boids with different colors, sizes and max speeds
@@ -19,21 +21,27 @@ const char *title = "Boids - Flock of birds";
 std::vector<Boid> get_random_boids()
 {
     std::vector<Boid> boids;
-    for (int i = 0; i < numberBoids; i++)
+    for (int i = 0; i < number_boids; i++)
     {
-        float x = GetRandomValue(0, screenWidth);
-        float y = GetRandomValue(0, screenHeight);
+        float x = GetRandomValue(0, screen_width);
+        float y = GetRandomValue(0, screen_height);
 
         float xvel = GetRandomValue(-50, 50);
         float yvel = GetRandomValue(-50, 50);
 
-        unsigned char r = GetRandomValue(0, 255);
-        unsigned char g = GetRandomValue(0, 255);
-        unsigned char b = GetRandomValue(0, 255);
+        float xacc = GetRandomValue(-5, 5);
+        float yacc = GetRandomValue(-5, 5);
 
-        int topSpeed = GetRandomValue(minSpeed, maxSpeed);
+        Color boid_color = {static_cast<unsigned char>(GetRandomValue(0, 255)),
+                            static_cast<unsigned char>(GetRandomValue(0, 255)),
+                            static_cast<unsigned char>(GetRandomValue(0, 255)), 255};
 
-        boids.push_back(Boid({x, y}, {xvel, yvel}, {0.0, 0.0}, {r, g, b, 255}, 8, topSpeed, max_acceleration));
+        int topSpeed = GetRandomValue(min_speed, max_speed);
+
+        int maxAcceleration = GetRandomValue(max_acceleration / 2, max_acceleration);
+
+        boids.push_back(
+            Boid({x, y}, {xvel, yvel}, {xacc, yacc}, boid_color, 8, topSpeed, max_acceleration));
     }
     return boids;
 }
@@ -41,7 +49,7 @@ std::vector<Boid> get_random_boids()
 int main(void)
 {
     Rules rules;
-    InitWindow(screenWidth, screenHeight, title);
+    InitWindow(screen_width, screen_height, title);
     SetTargetFPS(FPS);
 
     std::vector<Boid> boids = get_random_boids();
@@ -53,7 +61,7 @@ int main(void)
 
         // Apply rules
         rules.clear_forces(boids);
-        rules.steer_towards_mouse(boids);
+        rules.edge_rules(boids, screen_width, screen_height, edge_dist);
 
         // Update velocity and position of boids after applying forces
         for (auto &boid : boids)
@@ -63,7 +71,10 @@ int main(void)
         BeginDrawing();
         ClearBackground(RAYWHITE);
         for (const auto &boid : boids)
+        {
             boid.draw();
+            boid.debug();
+        }
         auto fps = std::to_string(GetFPS());
         DrawText(fps.c_str(), 10, 10, 40, RED);
         EndDrawing();
