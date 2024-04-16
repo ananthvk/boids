@@ -54,6 +54,7 @@ int main(void)
 {
     Rules rules;
     InitWindow(Config::get().screen_width, Config::get().screen_height, Config::get().title);
+    ToggleFullscreen();
     SetTargetFPS(Config::get().FPS);
 
     std::vector<Boid> boids = get_random_boids();
@@ -98,7 +99,7 @@ int main(void)
         // Draw the shapes to the screen
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        boids[0].detailed_debug(boids);
+        //boids[0].detailed_debug(boids);
         for (const auto &boid : boids)
         {
             boid.draw();

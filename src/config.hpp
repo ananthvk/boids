@@ -29,10 +29,10 @@ class Config
 
     Config()
     {
-        screen_width_ = 800;
-        screen_height_ = 800;
+        screen_width_ = 1920;
+        screen_height_ = 1080;
         FPS_ = 60;
-        number_boids_ = 150;
+        number_boids_ = 200;
         min_speed_ = 100;
         boid_size_ = 8;
         max_speed_ = 200;

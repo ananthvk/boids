@@ -72,7 +72,7 @@ class Boid
         pos.y = GetScreenHeight() - pos.y;
 
         debug();
-        DrawCircle(pos.x, pos.y, Config::get().fov_radius, {128, 128, 128, 128});
+        DrawCircle(pos.x, pos.y, Config::get().fov_radius, {128, 128, 128, 10});
 
         for (const auto &boid : boids)
         {
