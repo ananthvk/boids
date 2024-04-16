@@ -19,6 +19,10 @@ class Config
     bool enable_separation_;
     bool enable_edge_;
 
+    int boid_sides_; // For triangle
+    int debug_vector_length_;
+    int debug_vector_thickness_;
+
     Config()
     {
         screen_width_ = 800;
@@ -34,6 +38,9 @@ class Config
         enable_debug_ = true;
         enable_separation_ = true;
         enable_edge_ = true;
+        boid_sides_ = 3; // For triangle
+        debug_vector_length_ = 20;
+        debug_vector_thickness_ = 2;
     }
 
   public:
@@ -48,9 +55,14 @@ class Config
     const int &max_speed = max_speed_;
     const float &max_acceleration = max_acceleration_;
     const int &edge_dist = edge_dist_;
+
     bool &enable_debug = enable_debug_;
     bool &enable_separation = enable_separation_;
     bool &enable_edge = enable_edge_;
+
+    const int &boid_sides = boid_sides_;
+    const int &debug_vector_length = debug_vector_length_;
+    const int &debug_vector_thickness = debug_vector_thickness_;
 
     static Config &get()
     {

@@ -4,10 +4,6 @@
 #include "raymath.h"
 #include <string>
 
-const int BOID_SIDES = 3; // For triangle
-const int DEBUG_VECTOR_LENGTH = 20;
-const int DEBUG_VECTOR_THICKNESS = 2;
-
 class Boid
 {
   private:
@@ -27,8 +23,8 @@ class Boid
         Vector2 pos = position;
         pos.y = GetScreenHeight() - pos.y;
         v.y = -v.y;
-        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(v, DEBUG_VECTOR_LENGTH)),
-                   DEBUG_VECTOR_THICKNESS, c);
+        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(v, Config::get().debug_vector_length)),
+                   Config::get().debug_vector_thickness, c);
     }
 
   public:
@@ -89,7 +85,7 @@ class Boid
     {
         Vector2 pos = position;
         pos.y = GetScreenHeight() - pos.y;
-        DrawPoly(pos, BOID_SIDES, size, rotation, color);
+        DrawPoly(pos, Config::get().boid_sides, size, rotation, color);
 
         if (Config::get().enable_debug)
             debug();

@@ -3,12 +3,6 @@
 #include "config.hpp"
 #include <vector>
 
-const float vision = 10000;
-const float scale_factor = 5.0;
-const float friction_max = 30;
-const float friction_percent = 0.1;
-int steer_factor = 500 * 1000;
-
 class Rules
 {
   public:
