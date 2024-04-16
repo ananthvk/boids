@@ -14,7 +14,6 @@ class Boid
     float size;
     float rotation;
     int topSpeed;
-    float vision_radius;
 
     // Draw a vector (for debugging purpose)
     void draw_vector(Vector2 v, Color c, bool scale_unit) const
@@ -33,7 +32,7 @@ class Boid
     Boid(Vector2 initial_position, Vector2 initial_velocity = {0, 0},
          Color color = {0, 0, 255, 255}, float size = 15, int topSpeed = 100)
         : position(initial_position), velocity(initial_velocity), color(color), size(size),
-          rotation(0), topSpeed(topSpeed), vision_radius(100)
+          rotation(0), topSpeed(topSpeed)
 
     {
     }
@@ -73,14 +72,15 @@ class Boid
         pos.y = GetScreenHeight() - pos.y;
 
         debug();
-        DrawCircle(pos.x, pos.y, vision_radius, {128, 128, 128, 128});
+        DrawCircle(pos.x, pos.y, Config::get().fov_radius, {128, 128, 128, 128});
 
         for (const auto &boid : boids)
         {
             if (&boid != this)
             {
                 auto displacement = Vector2Subtract(boid.position, position);
-                if (Vector2LengthSqr(displacement) <= (vision_radius * vision_radius))
+                if (Vector2LengthSqr(displacement) <=
+                    (Config::get().fov_radius * Config::get().fov_radius))
                     draw_vector(displacement, YELLOW, false);
             }
         }
@@ -92,10 +92,11 @@ class Boid
     {
         displacement = Vector2Subtract(pos, position);
         length_sqr = Vector2LengthSqr(displacement);
-        if (length_sqr <= (vision_radius * vision_radius))
+        if (length_sqr <= (Config::get().fov_radius * Config::get().fov_radius))
         {
             // Also check FOV
-            if (Vector2Angle(velocity, displacement) > 0)
+            float dot = Vector2Angle(velocity, displacement);
+            if (dot > 0.5)
                 return true;
         }
         return false;

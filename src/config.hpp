@@ -25,6 +25,7 @@ class Config
     int debug_vector_thickness_;
 
     float fov_angle_;
+    float fov_radius_;
 
     Config()
     {
@@ -32,20 +33,21 @@ class Config
         screen_height_ = 800;
         FPS_ = 60;
         number_boids_ = 150;
-        min_speed_ = 50;
+        min_speed_ = 100;
         boid_size_ = 8;
-        max_speed_ = 100;
+        max_speed_ = 200;
         edge_dist_ = 20;
         title = "Boids - Flock of birds";
         enable_debug_ = true;
-        enable_separation_ = false;
-        enable_cohesion_ = false;
-        enable_alignment_ = false;
+        enable_separation_ = true;
+        enable_cohesion_ = true;
+        enable_alignment_ = true;
         enable_edge_ = true;
         boid_sides_ = 3; // For triangle
         debug_vector_length_ = 20;
         debug_vector_thickness_ = 2;
         fov_angle_ = 240; // In degrees
+        fov_radius_ = 50;
     }
 
   public:
@@ -71,6 +73,7 @@ class Config
     const int &debug_vector_thickness = debug_vector_thickness_;
 
     const float &fov_angle = fov_angle_;
+    const float &fov_radius = fov_radius_;
 
     static Config &get()
     {
