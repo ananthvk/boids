@@ -12,7 +12,6 @@ class Config
     int boid_size_;
     int max_speed_;
 
-    float max_acceleration_;
     int edge_dist_;
 
     bool enable_debug_;
@@ -28,11 +27,10 @@ class Config
         screen_width_ = 800;
         screen_height_ = 800;
         FPS_ = 60;
-        number_boids_ = 200;
-        min_speed_ = 950;
+        number_boids_ = 150;
+        min_speed_ = 50;
         boid_size_ = 8;
-        max_speed_ = 1250;
-        max_acceleration_ = 600;
+        max_speed_ = 100;
         edge_dist_ = 20;
         title = "Boids - Flock of birds";
         enable_debug_ = true;
@@ -53,7 +51,6 @@ class Config
     const int &min_speed = min_speed_;
     const int &boid_size = boid_size_;
     const int &max_speed = max_speed_;
-    const float &max_acceleration = max_acceleration_;
     const int &edge_dist = edge_dist_;
 
     bool &enable_debug = enable_debug_;

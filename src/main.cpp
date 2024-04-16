@@ -20,8 +20,10 @@ std::vector<Boid> get_random_boids()
                              static_cast<float>(GetRandomValue(-1000, 1000))};
         direction = Vector2Normalize(direction);
 
-        Vector2 velocity =
-            Vector2Scale(direction, static_cast<float>(GetRandomValue(100, 1000)) / 10.0);
+        Vector2 velocity = Vector2Scale(
+            direction,
+            static_cast<float>(
+                GetRandomValue(Config::get().min_speed * 10, Config::get().max_speed * 10) / 10.0));
 
         Color boid_color = {static_cast<unsigned char>(GetRandomValue(0, 200)),
                             static_cast<unsigned char>(GetRandomValue(0, 200)),

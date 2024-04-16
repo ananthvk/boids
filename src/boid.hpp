@@ -86,5 +86,16 @@ class Boid
         }
     }
 
+    // Chekcs if the point is within the field of view of the boid
+    // Also sets displacement to the distance between the boid and the point squared
+    bool is_in_fov(Vector2 pos, Vector2 &displacement, float &length_sqr)
+    {
+        displacement = Vector2Subtract(pos, position);
+        length_sqr = Vector2LengthSqr(displacement);
+        if (length_sqr <= (vision_radius * vision_radius))
+            return true;
+        return false;
+    }
+
     friend class Rules;
 };
