@@ -55,7 +55,7 @@ int main(void)
     Rules rules;
     InitWindow(Config::get().screen_width, Config::get().screen_height, Config::get().title);
     ToggleFullscreen();
-    SetTargetFPS(Config::get().FPS);
+    // SetTargetFPS(Config::get().FPS);
 
     std::vector<Boid> boids = get_random_boids();
 
@@ -87,6 +87,8 @@ int main(void)
             rules.alignment(boids);
         if (Config::get().enable_edge)
             rules.edge_rules(boids);
+        
+        rules.all(boids);
 
         rules.check_if_velocity_less_than_min_speed(boids);
 
