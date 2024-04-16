@@ -6,18 +6,6 @@
 class Rules
 {
   public:
-    // Removes all forces acting on this boid
-    void clear_forces(Boid &boid) { boid.new_acceleration = {0, 0}; }
-
-    // Removes all forces acting on the given boids
-    void clear_forces(std::vector<Boid> &boids)
-    {
-        for (auto &boid : boids)
-        {
-            clear_forces(boid);
-        }
-    }
-
     void edge_rules(std::vector<Boid> &boids)
     {
         int max_x = Config::get().screen_width;

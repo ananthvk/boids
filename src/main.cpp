@@ -29,19 +29,16 @@ std::vector<Boid> get_random_boids()
 
         int topSpeed = GetRandomValue(Config::get().min_speed, Config::get().max_speed);
 
-        int maxAcceleration =
-            GetRandomValue(Config::get().max_acceleration / 2, Config::get().max_acceleration);
 
         if (i == 0)
         {
-            boids.push_back(Boid({x, y}, velocity, {0, 0}, {255, 0, 0, 255},
-                                 Config::get().boid_size * 1.5, topSpeed, maxAcceleration));
+            boids.push_back(
+                Boid({x, y}, velocity, {255, 0, 0, 255}, Config::get().boid_size * 1.5, topSpeed));
         }
         else
         {
 
-            boids.push_back(Boid({x, y}, velocity, {0, 0}, boid_color, Config::get().boid_size,
-                                 topSpeed, Config::get().max_acceleration));
+            boids.push_back(Boid({x, y}, velocity, boid_color, Config::get().boid_size, topSpeed));
         }
     }
     return boids;
@@ -71,7 +68,6 @@ int main(void)
         float dt = GetFrameTime();
 
         // Apply rules
-        rules.clear_forces(boids);
         if (Config::get().enable_separation)
             rules.separation(boids);
         if (Config::get().enable_edge)
