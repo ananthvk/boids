@@ -80,7 +80,7 @@ int main(void)
         // Draw the shapes to the screen
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        boids[0].debug();
+        boids[0].detailed_debug(boids);
         for (const auto &boid : boids)
         {
             boid.draw();

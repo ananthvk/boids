@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <string>
+#include <vector>
 
 class Boid
 {
@@ -16,21 +17,23 @@ class Boid
     float vision_radius;
 
     // Draw a vector (for debugging purpose)
-    void draw_vector(Vector2 v, Color c) const
+    void draw_vector(Vector2 v, Color c, bool scale_unit) const
     {
         Vector2 pos = position;
         pos.y = GetScreenHeight() - pos.y;
         v.y = -v.y;
-        DrawLineEx(pos, Vector2Add(pos, Vector2Scale(v, Config::get().debug_vector_length)),
-                   Config::get().debug_vector_thickness, c);
+        if (scale_unit)
+            DrawLineEx(pos, Vector2Add(pos, Vector2Scale(v, Config::get().debug_vector_length)),
+                       Config::get().debug_vector_thickness, c);
+        else
+            DrawLineEx(pos, Vector2Add(pos, v), Config::get().debug_vector_thickness, c);
     }
 
   public:
     Boid(Vector2 initial_position, Vector2 initial_velocity = {0, 0},
-         Color color = {0, 0, 255, 255}, float size = 15, int topSpeed = 100,
-         float max_acceleration = 75)
+         Color color = {0, 0, 255, 255}, float size = 15, int topSpeed = 100)
         : position(initial_position), velocity(initial_velocity), color(color), size(size),
-          rotation(0), topSpeed(topSpeed)
+          rotation(0), topSpeed(topSpeed), vision_radius(100)
 
     {
     }
@@ -61,7 +64,26 @@ class Boid
     void debug() const
     {
         Vector2 velocity_direction = Vector2Normalize(velocity);
-        draw_vector(velocity_direction, GREEN);
+        draw_vector(velocity_direction, GREEN, true);
+    }
+
+    void detailed_debug(const std::vector<Boid> &boids) const
+    {
+        Vector2 pos = position;
+        pos.y = GetScreenHeight() - pos.y;
+
+        debug();
+        DrawCircle(pos.x, pos.y, vision_radius, {128, 128, 128, 128});
+
+        for (const auto &boid : boids)
+        {
+            if (&boid != this)
+            {
+                auto displacement = Vector2Subtract(boid.position, position);
+                if (Vector2LengthSqr(displacement) <= (vision_radius * vision_radius))
+                    draw_vector(displacement, YELLOW, false);
+            }
+        }
     }
 
     friend class Rules;
