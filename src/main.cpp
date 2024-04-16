@@ -16,8 +16,12 @@ std::vector<Boid> get_random_boids()
         float x = GetRandomValue(0, Config::get().screen_width);
         float y = GetRandomValue(0, Config::get().screen_height);
 
-        Vector2 direction = {static_cast<float>(GetRandomValue(-1000, 1000)),
-                             static_cast<float>(GetRandomValue(-1000, 1000))};
+        // Vector2 direction = {static_cast<float>(GetRandomValue(-1000, 1000)),
+        //                      static_cast<float>(GetRandomValue(-1000, 1000))};
+
+        // Get vector to center of screen
+        Vector2 direction = {static_cast<float>((Config::get().screen_width) / 2.0 - x),
+                             static_cast<float>((Config::get().screen_height) / 2.0 - y)};
         direction = Vector2Normalize(direction);
 
         Vector2 velocity = Vector2Scale(
@@ -61,6 +65,10 @@ int main(void)
             Config::toggle(Config::get().enable_debug);
         if (IsKeyPressed(KEY_S))
             Config::toggle(Config::get().enable_separation);
+        if (IsKeyPressed(KEY_C))
+            Config::toggle(Config::get().enable_cohesion);
+        if (IsKeyPressed(KEY_A))
+            Config::toggle(Config::get().enable_alignment);
         if (IsKeyPressed(KEY_E))
             Config::toggle(Config::get().enable_edge);
         if (IsKeyPressed(KEY_R))
@@ -72,12 +80,20 @@ int main(void)
         // Apply rules
         if (Config::get().enable_separation)
             rules.separation(boids);
+        if (Config::get().enable_cohesion)
+            rules.cohesion(boids);
+        if (Config::get().enable_alignment)
+            rules.alignment(boids);
         if (Config::get().enable_edge)
             rules.edge_rules(boids);
 
+        rules.check_if_velocity_less_than_min_speed(boids);
+
         // Update velocity and position of boids after applying forces
         for (auto &boid : boids)
+        {
             boid.update(dt);
+        }
 
         // Draw the shapes to the screen
         BeginDrawing();
@@ -88,6 +104,22 @@ int main(void)
             boid.draw();
         }
         auto fps = std::to_string(GetFPS());
+        if (Config::get().enable_separation)
+        {
+            fps += " S";
+        }
+        if (Config::get().enable_cohesion)
+        {
+            fps += " C";
+        }
+        if (Config::get().enable_alignment)
+        {
+            fps += " A";
+        }
+        if (Config::get().enable_edge)
+        {
+            fps += " E";
+        }
         DrawText(fps.c_str(), 10, 10, 40, RED);
         EndDrawing();
     }

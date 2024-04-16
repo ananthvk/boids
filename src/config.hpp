@@ -16,11 +16,15 @@ class Config
 
     bool enable_debug_;
     bool enable_separation_;
+    bool enable_cohesion_;
     bool enable_edge_;
+    bool enable_alignment_;
 
     int boid_sides_; // For triangle
     int debug_vector_length_;
     int debug_vector_thickness_;
+
+    float fov_angle_;
 
     Config()
     {
@@ -34,11 +38,14 @@ class Config
         edge_dist_ = 20;
         title = "Boids - Flock of birds";
         enable_debug_ = true;
-        enable_separation_ = true;
+        enable_separation_ = false;
+        enable_cohesion_ = false;
+        enable_alignment_ = false;
         enable_edge_ = true;
         boid_sides_ = 3; // For triangle
         debug_vector_length_ = 20;
         debug_vector_thickness_ = 2;
+        fov_angle_ = 240; // In degrees
     }
 
   public:
@@ -56,10 +63,14 @@ class Config
     bool &enable_debug = enable_debug_;
     bool &enable_separation = enable_separation_;
     bool &enable_edge = enable_edge_;
+    bool &enable_cohesion = enable_cohesion_;
+    bool &enable_alignment = enable_alignment_;
 
     const int &boid_sides = boid_sides_;
     const int &debug_vector_length = debug_vector_length_;
     const int &debug_vector_thickness = debug_vector_thickness_;
+
+    const float &fov_angle = fov_angle_;
 
     static Config &get()
     {

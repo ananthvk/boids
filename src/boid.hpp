@@ -93,7 +93,11 @@ class Boid
         displacement = Vector2Subtract(pos, position);
         length_sqr = Vector2LengthSqr(displacement);
         if (length_sqr <= (vision_radius * vision_radius))
-            return true;
+        {
+            // Also check FOV
+            if (Vector2Angle(velocity, displacement) > 0)
+                return true;
+        }
         return false;
     }
 
