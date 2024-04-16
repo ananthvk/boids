@@ -38,6 +38,7 @@ class Boid
         : position(initial_position), velocity(initial_velocity),
           acceleration(initial_acceleration), color(color), size(size), rotation(0),
           topSpeed(topSpeed), new_acceleration({0, 0}), max_acceleration(max_acceleration)
+
     {
     }
 
@@ -64,6 +65,8 @@ class Boid
 
         // Clamp the velocity of the boid
         velocity = Vector2ClampValue(velocity, 0, topSpeed);
+
+        acceleration = Vector2ClampValue(acceleration, 0, max_acceleration);
 
         // Update rotation to point in the direction of the velocity vector
         // Find the angle between shape and x axis
