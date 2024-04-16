@@ -1,34 +1,20 @@
 #include "boid.hpp"
+#include "config.hpp"
 #include "raylib.h"
 #include "rules.hpp"
+#include <iostream>
 #include <string>
 #include <vector>
-
-// Some constants such as title, screen dimensions, etc
-const int screen_width = 800;
-const int screen_height = 800;
-const int FPS = 60;
-const int number_boids = 200;
-const int min_speed = 950;
-const int boid_size = 8;
-const int max_speed = 1250;
-const float max_acceleration = 600;
-const int edge_dist = 20;
-const char *title = "Boids - Flock of birds";
-
-bool enable_debug = true;
-bool enable_separation = true;
-bool enable_edge = true;
 
 /// Generates boids with different colors, sizes and max speeds
 /// @return vector of boids
 std::vector<Boid> get_random_boids()
 {
     std::vector<Boid> boids;
-    for (int i = 0; i < number_boids; i++)
+    for (int i = 0; i < Config::get().number_boids; i++)
     {
-        float x = GetRandomValue(0, screen_width);
-        float y = GetRandomValue(0, screen_height);
+        float x = GetRandomValue(0, Config::get().screen_width);
+        float y = GetRandomValue(0, Config::get().screen_height);
 
         Vector2 direction = {static_cast<float>(GetRandomValue(-1000, 1000)),
                              static_cast<float>(GetRandomValue(-1000, 1000))};
@@ -41,20 +27,21 @@ std::vector<Boid> get_random_boids()
                             static_cast<unsigned char>(GetRandomValue(0, 200)),
                             static_cast<unsigned char>(GetRandomValue(200, 255)), 255};
 
-        int topSpeed = GetRandomValue(min_speed, max_speed);
+        int topSpeed = GetRandomValue(Config::get().min_speed, Config::get().max_speed);
 
-        int maxAcceleration = GetRandomValue(max_acceleration / 2, max_acceleration);
+        int maxAcceleration =
+            GetRandomValue(Config::get().max_acceleration / 2, Config::get().max_acceleration);
 
         if (i == 0)
         {
-            boids.push_back(Boid({x, y}, velocity, {0, 0}, {255, 0, 0, 255}, boid_size * 1.5,
-                                 topSpeed, max_acceleration));
+            boids.push_back(Boid({x, y}, velocity, {0, 0}, {255, 0, 0, 255},
+                                 Config::get().boid_size * 1.5, topSpeed, maxAcceleration));
         }
         else
         {
 
-            boids.push_back(
-                Boid({x, y}, velocity, {0, 0}, boid_color, boid_size, topSpeed, max_acceleration));
+            boids.push_back(Boid({x, y}, velocity, {0, 0}, boid_color, Config::get().boid_size,
+                                 topSpeed, Config::get().max_acceleration));
         }
     }
     return boids;
@@ -63,8 +50,8 @@ std::vector<Boid> get_random_boids()
 int main(void)
 {
     Rules rules;
-    InitWindow(screen_width, screen_height, title);
-    SetTargetFPS(FPS);
+    InitWindow(Config::get().screen_width, Config::get().screen_height, Config::get().title);
+    SetTargetFPS(Config::get().FPS);
 
     std::vector<Boid> boids = get_random_boids();
 
@@ -72,11 +59,11 @@ int main(void)
     {
         // Get key presses
         if (IsKeyPressed(KEY_F2))
-            enable_debug = !enable_debug;
+            Config::toggle(Config::get().enable_debug);
         if (IsKeyPressed(KEY_S))
-            enable_separation = !enable_separation;
+            Config::toggle(Config::get().enable_separation);
         if (IsKeyPressed(KEY_E))
-            enable_edge = !enable_edge;
+            Config::toggle(Config::get().enable_edge);
         if (IsKeyPressed(KEY_R))
             boids = get_random_boids();
 
@@ -85,10 +72,10 @@ int main(void)
 
         // Apply rules
         rules.clear_forces(boids);
-        if (enable_separation)
+        if (Config::get().enable_separation)
             rules.separation(boids);
-        if (enable_edge)
-            rules.edge_rules(boids, screen_width, screen_height, edge_dist);
+        if (Config::get().enable_edge)
+            rules.edge_rules(boids);
 
         // Update velocity and position of boids after applying forces
         for (auto &boid : boids)
@@ -101,8 +88,6 @@ int main(void)
         for (const auto &boid : boids)
         {
             boid.draw();
-            if (enable_debug)
-                boid.debug();
         }
         auto fps = std::to_string(GetFPS());
         DrawText(fps.c_str(), 10, 10, 40, RED);

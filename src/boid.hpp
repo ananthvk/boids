@@ -1,5 +1,5 @@
 #pragma once
-
+#include "config.hpp"
 #include "raylib.h"
 #include "raymath.h"
 #include <string>
@@ -90,6 +90,9 @@ class Boid
         Vector2 pos = position;
         pos.y = GetScreenHeight() - pos.y;
         DrawPoly(pos, BOID_SIDES, size, rotation, color);
+
+        if (Config::get().enable_debug)
+            debug();
     }
 
     void debug() const

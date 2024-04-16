@@ -1,5 +1,6 @@
 #pragma once
 #include "boid.hpp"
+#include "config.hpp"
 #include <vector>
 
 const float vision = 10000;
@@ -23,8 +24,11 @@ class Rules
         }
     }
 
-    void edge_rules(std::vector<Boid> &boids, int max_x, int max_y, int buffer)
+    void edge_rules(std::vector<Boid> &boids)
     {
+        int max_x = Config::get().screen_width;
+        int max_y = Config::get().screen_height;
+        int buffer = Config::get().edge_dist;
         for (auto &boid : boids)
         {
             // Make the boid move out of the screen before changing the position
@@ -48,7 +52,5 @@ class Rules
         }
     }
 
-    void separation(std::vector<Boid> &boids)
-    {
-    }
+    void separation(std::vector<Boid> &boids) {}
 };

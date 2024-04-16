@@ -1,17 +1,64 @@
 #pragma once
+#include <iostream>
 
 class Config
 {
   private:
-    Config() {}
+    int screen_width_;
+    int screen_height_;
+    int FPS_;
+    int number_boids_;
+    int min_speed_;
+    int boid_size_;
+    int max_speed_;
+
+    float max_acceleration_;
+    int edge_dist_;
+
+    bool enable_debug_;
+    bool enable_separation_;
+    bool enable_edge_;
+
+    Config()
+    {
+        screen_width_ = 800;
+        screen_height_ = 800;
+        FPS_ = 60;
+        number_boids_ = 200;
+        min_speed_ = 950;
+        boid_size_ = 8;
+        max_speed_ = 1250;
+        max_acceleration_ = 600;
+        edge_dist_ = 20;
+        title = "Boids - Flock of birds";
+        enable_debug_ = true;
+        enable_separation_ = true;
+        enable_edge_ = true;
+    }
 
   public:
+    const char *title;
+
+    const int &screen_width = screen_width_;
+    const int &screen_height = screen_height_;
+    const int &FPS = FPS_;
+    const int &number_boids = number_boids_;
+    const int &min_speed = min_speed_;
+    const int &boid_size = boid_size_;
+    const int &max_speed = max_speed_;
+    const float &max_acceleration = max_acceleration_;
+    const int &edge_dist = edge_dist_;
+    bool &enable_debug = enable_debug_;
+    bool &enable_separation = enable_separation_;
+    bool &enable_edge = enable_edge_;
 
     static Config &get()
     {
         static Config config;
         return config;
     }
+
+    static void toggle(bool &b) { b = !b; }
 
     // Delete copy assignment & copy constructors, also delete move
     Config(const Config &) = delete;
