@@ -39,13 +39,23 @@ std::vector<Boid> get_random_boids()
 
         if (i == 0)
         {
-            boids.push_back(
-                Boid({x, y}, velocity, {255, 0, 0, 255}, Config::get().boid_size * 1.5, topSpeed));
+            boids.push_back(BoidBuilder()
+                                .position({x, y})
+                                .color(boid_color)
+                                .topSpeed(topSpeed)
+                                .velocity(velocity)
+                                .size(16)
+                                .build());
         }
         else
         {
 
-            boids.push_back(Boid({x, y}, velocity, boid_color, Config::get().boid_size, topSpeed));
+            boids.push_back(BoidBuilder()
+                                .position({x, y})
+                                .color(boid_color)
+                                .topSpeed(topSpeed)
+                                .velocity(velocity)
+                                .build());
         }
     }
     return boids;

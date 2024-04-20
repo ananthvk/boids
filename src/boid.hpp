@@ -28,10 +28,9 @@ class Boid
             DrawLineEx(pos, Vector2Add(pos, v), Config::get().debug_vector_thickness, c);
     }
 
-    Boid(Vector2 initial_position, Vector2 initial_velocity = {0, 0},
-         Color color = {0, 0, 255, 255}, float size = 15, int topSpeed = 100)
-        : position(initial_position), velocity(initial_velocity), color(color), size(size),
-          rotation(0), topSpeed(topSpeed)
+    Boid()
+        : position{0, 0}, velocity{0.0, 0.0}, color{0, 0, 0, 255},
+          size{static_cast<float>(Config::get().boid_size)}, rotation{0.0}, topSpeed{0}
 
     {
     }
@@ -101,6 +100,48 @@ class Boid
         }
         return false;
     }
+};
 
-    friend class Rules;
+class BoidBuilder
+{
+    Boid b;
+
+  public:
+    BoidBuilder &position(Vector2 pos)
+    {
+        b.position = pos;
+        return *this;
+    }
+
+    BoidBuilder &velocity(Vector2 vel)
+    {
+        b.velocity = vel;
+        return *this;
+    }
+
+    BoidBuilder &color(Color col)
+    {
+        b.color = col;
+        return *this;
+    }
+
+    BoidBuilder &size(float sz)
+    {
+        b.size = sz;
+        return *this;
+    }
+
+    BoidBuilder &rotation(float rot)
+    {
+        b.rotation = rot;
+        return *this;
+    }
+
+    BoidBuilder &topSpeed(int top)
+    {
+        b.topSpeed = top;
+        return *this;
+    }
+
+    Boid build() { return b; }
 };
