@@ -75,7 +75,7 @@ int main(void)
 
     NeighbourRule *neighbour_rules[] = {&sep, &coh, &ali};
 
-    manager.register_for_every_boid(edge_rules);
+    manager.register_for_every_boid(edge_rules_reverse_velocity);
     manager.register_for_every_boid(check_if_velocity_less_than_min_speed);
     for (auto &rule : neighbour_rules)
         manager.register_neighbour_rule(rule);

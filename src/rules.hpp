@@ -30,6 +30,31 @@ void edge_rules(Boid &boid)
     }
 }
 
+// Reverse the boid's velocity to point towards the screen
+void edge_rules_reverse_velocity(Boid &boid)
+{
+    int max_x = Config::get().screen_width;
+    int max_y = Config::get().screen_height;
+    int buffer = Config::get().edge_dist;
+    if (boid.position.x > (max_x + buffer) && boid.velocity.x > 0)
+    {
+        boid.velocity.x = -boid.velocity.x;
+    }
+    else if (boid.position.x < -buffer && boid.velocity.x < 0)
+    {
+        boid.velocity.x = -boid.velocity.x;
+    }
+
+    if (boid.position.y > (max_y + buffer) && boid.velocity.y > 0)
+    {
+        boid.velocity.y = -boid.velocity.y;
+    }
+    else if (boid.position.y < -buffer && boid.velocity.y < 0)
+    {
+        boid.velocity.y = -boid.velocity.y;
+    }
+}
+
 void check_if_velocity_less_than_min_speed(Boid &boid)
 {
     if (Vector2Length(boid.velocity) <= Config::get().min_speed)
