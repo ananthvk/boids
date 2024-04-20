@@ -12,7 +12,7 @@ Clone this repo with
 $ git clone https://github.com/ananthvk/boids
 ```
 
-On linux systems, install the raylib package using your system package manager or building from [https://github.com/raysan5/raylib](https://github.com/raysan5/raylib)
+On linux systems, install the raylib package using your system package manager or build from [https://github.com/raysan5/raylib](https://github.com/raysan5/raylib)
 
 Install meson and ninja
 
