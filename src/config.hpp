@@ -15,10 +15,10 @@ class Config
     int edge_dist_;
 
     bool enable_debug_;
-    bool enable_separation_;
-    bool enable_cohesion_;
-    bool enable_edge_;
-    bool enable_alignment_;
+
+    float separation_coeff_;
+    float alignment_coeff_;
+    float cohesion_coeff_;
 
     int boid_sides_; // For triangle
     int debug_vector_length_;
@@ -32,22 +32,22 @@ class Config
         screen_width_ = 1920;
         screen_height_ = 1080;
         FPS_ = 60;
-        number_boids_ = 160;
+        number_boids_ = 1600;
         min_speed_ = 100;
         boid_size_ = 8;
         max_speed_ = 200;
         edge_dist_ = 20;
         title = "Boids - Flock of birds";
         enable_debug_ = true;
-        enable_separation_ = false;
-        enable_cohesion_ = false;
-        enable_alignment_ = false;
-        enable_edge_ = true;
         boid_sides_ = 3; // For triangle
         debug_vector_length_ = 20;
         debug_vector_thickness_ = 2;
         fov_angle_ = 240; // In degrees
         fov_radius_ = 50;
+
+        separation_coeff_ = 500;
+        alignment_coeff_ = 0.1;
+        cohesion_coeff_ = 2.0;
     }
 
   public:
@@ -63,10 +63,6 @@ class Config
     const int &edge_dist = edge_dist_;
 
     bool &enable_debug = enable_debug_;
-    bool &enable_separation = enable_separation_;
-    bool &enable_edge = enable_edge_;
-    bool &enable_cohesion = enable_cohesion_;
-    bool &enable_alignment = enable_alignment_;
 
     const int &boid_sides = boid_sides_;
     const int &debug_vector_length = debug_vector_length_;
@@ -74,6 +70,10 @@ class Config
 
     const float &fov_angle = fov_angle_;
     const float &fov_radius = fov_radius_;
+
+    float &separation_coeff = separation_coeff_;
+    float &alignment_coeff = alignment_coeff_;
+    float &cohesion_coeff = cohesion_coeff_;
 
     static Config &get()
     {

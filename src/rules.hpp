@@ -53,7 +53,7 @@ class SeparationRule : public NeighbourRule
 
     void apply(Boid &boid)
     {
-        steer = Vector2Scale(steer, 500);
+        steer = Vector2Scale(steer, Config::get().separation_coeff);
         boid.velocity = Vector2Add(boid.velocity, steer);
     }
 };
@@ -83,7 +83,7 @@ class CohesionRule : public NeighbourRule
         {
             centroid = Vector2Scale(centroid, 1.0 / n);
             steer = Vector2Normalize(Vector2Subtract(centroid, boid.position));
-            steer = Vector2Scale(steer, 2.0);
+            steer = Vector2Scale(steer, Config::get().cohesion_coeff);
             boid.velocity = Vector2Add(boid.velocity, steer);
         }
     }
@@ -114,7 +114,7 @@ class AlignmentRule : public NeighbourRule
         {
             velocity = Vector2Scale(velocity, 1.0 / n);
             steer = Vector2Subtract(velocity, boid.velocity);
-            steer = Vector2Scale(steer, 0.1);
+            steer = Vector2Scale(steer, Config::get().alignment_coeff);
             boid.velocity = Vector2Add(boid.velocity, steer);
         }
     }

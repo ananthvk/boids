@@ -56,6 +56,7 @@ int main(void)
     InitWindow(Config::get().screen_width, Config::get().screen_height, Config::get().title);
     ToggleFullscreen();
     SetTargetFPS(Config::get().FPS);
+    char buffer[4096];
 
     RuleManager manager;
     SeparationRule sep;
@@ -79,6 +80,21 @@ int main(void)
         if (IsKeyPressed(KEY_R))
             boids = get_random_boids();
 
+        if (IsKeyPressed(KEY_W))
+            Config::get().separation_coeff += 50;
+        if (IsKeyPressed(KEY_S))
+            Config::get().separation_coeff -= 50;
+
+        if (IsKeyPressed(KEY_K))
+            Config::get().cohesion_coeff += 0.5;
+        if (IsKeyPressed(KEY_J))
+            Config::get().cohesion_coeff -= 0.5;
+
+        if (IsKeyPressed(KEY_UP))
+            Config::get().alignment_coeff += 0.1;
+        if (IsKeyPressed(KEY_DOWN))
+            Config::get().alignment_coeff -= 0.1;
+
         // Update position, velocity, etc
         float dt = GetFrameTime();
 
@@ -100,7 +116,10 @@ int main(void)
             boid.draw();
         }
         auto fps = std::to_string(GetFPS());
+        snprintf(buffer, 4096, "S: %.02f C: %.02f A: %.02f", Config::get().separation_coeff,
+                 Config::get().cohesion_coeff, Config::get().alignment_coeff);
         DrawText(fps.c_str(), 10, 10, 40, RED);
+        DrawText(buffer, 10, 50, 40, GREEN);
         EndDrawing();
     }
     CloseWindow();
