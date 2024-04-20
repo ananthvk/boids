@@ -7,7 +7,7 @@
 
 class Boid
 {
-  private:
+  public:
     Vector2 position;
     Vector2 velocity;
     Color color;
@@ -28,7 +28,6 @@ class Boid
             DrawLineEx(pos, Vector2Add(pos, v), Config::get().debug_vector_thickness, c);
     }
 
-  public:
     Boid(Vector2 initial_position, Vector2 initial_velocity = {0, 0},
          Color color = {0, 0, 255, 255}, float size = 15, int topSpeed = 100)
         : position(initial_position), velocity(initial_velocity), color(color), size(size),
@@ -86,8 +85,9 @@ class Boid
         }
     }
 
-    // Chekcs if the point is within the field of view of the boid
-    // Also sets displacement to the distance between the boid and the point squared
+    // Checks if the point is within the field of view of the boid
+    // Also sets displacement to the vector pointing towards the point, and length_sqr square of
+    // distance between the points
     bool is_in_fov(Vector2 pos, Vector2 &displacement, float &length_sqr)
     {
         displacement = Vector2Subtract(pos, position);

@@ -1,6 +1,7 @@
 #include "boid.hpp"
 #include "config.hpp"
 #include "raylib.h"
+#include "rulemanager.hpp"
 #include "rules.hpp"
 #include <iostream>
 #include <string>
@@ -52,10 +53,21 @@ std::vector<Boid> get_random_boids()
 
 int main(void)
 {
-    Rules rules;
     InitWindow(Config::get().screen_width, Config::get().screen_height, Config::get().title);
     ToggleFullscreen();
-    // SetTargetFPS(Config::get().FPS);
+    SetTargetFPS(Config::get().FPS);
+
+    RuleManager manager;
+    SeparationRule sep;
+    CohesionRule coh;
+    AlignmentRule ali;
+
+    NeighbourRule *neighbour_rules[] = {&sep, &coh, &ali};
+
+    manager.register_for_every_boid(edge_rules);
+    manager.register_for_every_boid(check_if_velocity_less_than_min_speed);
+    for (auto &rule : neighbour_rules)
+        manager.register_neighbour_rule(rule);
 
     std::vector<Boid> boids = get_random_boids();
 
@@ -64,14 +76,6 @@ int main(void)
         // Get key presses
         if (IsKeyPressed(KEY_F2))
             Config::toggle(Config::get().enable_debug);
-        if (IsKeyPressed(KEY_S))
-            Config::toggle(Config::get().enable_separation);
-        if (IsKeyPressed(KEY_C))
-            Config::toggle(Config::get().enable_cohesion);
-        if (IsKeyPressed(KEY_A))
-            Config::toggle(Config::get().enable_alignment);
-        if (IsKeyPressed(KEY_E))
-            Config::toggle(Config::get().enable_edge);
         if (IsKeyPressed(KEY_R))
             boids = get_random_boids();
 
@@ -79,18 +83,7 @@ int main(void)
         float dt = GetFrameTime();
 
         // Apply rules
-        if (Config::get().enable_separation)
-            rules.separation(boids);
-        if (Config::get().enable_cohesion)
-            rules.cohesion(boids);
-        if (Config::get().enable_alignment)
-            rules.alignment(boids);
-        if (Config::get().enable_edge)
-            rules.edge_rules(boids);
-        
-        rules.all(boids);
-
-        rules.check_if_velocity_less_than_min_speed(boids);
+        manager.execute(boids);
 
         // Update velocity and position of boids after applying forces
         for (auto &boid : boids)
@@ -101,28 +94,12 @@ int main(void)
         // Draw the shapes to the screen
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        //boids[0].detailed_debug(boids);
+        // boids[0].detailed_debug(boids);
         for (const auto &boid : boids)
         {
             boid.draw();
         }
         auto fps = std::to_string(GetFPS());
-        if (Config::get().enable_separation)
-        {
-            fps += " S";
-        }
-        if (Config::get().enable_cohesion)
-        {
-            fps += " C";
-        }
-        if (Config::get().enable_alignment)
-        {
-            fps += " A";
-        }
-        if (Config::get().enable_edge)
-        {
-            fps += " E";
-        }
         DrawText(fps.c_str(), 10, 10, 40, RED);
         EndDrawing();
     }
