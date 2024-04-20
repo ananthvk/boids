@@ -18,6 +18,7 @@ Install meson and ninja
 
 ```
 $ meson setup builddir
+$ cd builddir
 $ ninja -j8
 $ ./boids
 ```
