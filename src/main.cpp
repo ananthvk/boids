@@ -105,6 +105,18 @@ int main(void)
         if (IsKeyPressed(KEY_DOWN))
             Config::get().alignment_coeff -= 0.1;
 
+        if (IsKeyPressed(KEY_H))
+            Config::get().fov_radius += 5;
+        if (IsKeyPressed(KEY_L))
+            Config::get().fov_radius -= 5;
+
+        if (IsKeyPressed(KEY_U))
+            for (auto &boid : boids)
+                boid.size -= 0.5;
+        if (IsKeyPressed(KEY_I))
+            for (auto &boid : boids)
+                boid.size += 0.5;
+
         // Update position, velocity, etc
         float dt = GetFrameTime();
 
@@ -126,8 +138,9 @@ int main(void)
             boid.draw();
         }
         auto fps = std::to_string(GetFPS());
-        snprintf(buffer, 4096, "S: %.02f C: %.02f A: %.02f", Config::get().separation_coeff,
-                 Config::get().cohesion_coeff, Config::get().alignment_coeff);
+        snprintf(buffer, 4096, "S: %.02f C: %.02f A: %.02f F: %.02f",
+                 Config::get().separation_coeff, Config::get().cohesion_coeff,
+                 Config::get().alignment_coeff, Config::get().fov_radius);
         DrawText(fps.c_str(), 10, 10, 40, RED);
         DrawText(buffer, 10, 50, 40, GREEN);
         EndDrawing();

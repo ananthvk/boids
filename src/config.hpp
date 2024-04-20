@@ -32,7 +32,7 @@ class Config
         screen_width_ = 1920;
         screen_height_ = 1080;
         FPS_ = 60;
-        number_boids_ = 160;
+        number_boids_ = 1600;
         min_speed_ = 100;
         boid_size_ = 8;
         max_speed_ = 200;
@@ -69,7 +69,7 @@ class Config
     const int &debug_vector_thickness = debug_vector_thickness_;
 
     const float &fov_angle = fov_angle_;
-    const float &fov_radius = fov_radius_;
+    float &fov_radius = fov_radius_;
 
     float &separation_coeff = separation_coeff_;
     float &alignment_coeff = alignment_coeff_;
